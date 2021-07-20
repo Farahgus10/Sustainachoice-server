@@ -7,6 +7,8 @@ const { NODE_ENV } = require('./config')
 const winston = require('winston')
 const sustainachoiceRouter = require ('./Sustainachoice/sustainachoice-router');
 const emailRouter = require ('./Email/email-router')
+const authRouter = require('./Auth/auth-router')
+const userRouter = require('./Users/user-router')
 
 const app = express();
 
@@ -35,14 +37,17 @@ app.use(helmet())
 //     res.send('Hello, world!')
 // })
 
-// app.use(express.json());
+app.use(express.json());
+
 app.use(sustainachoiceRouter);
 app.use(emailRouter);
+app.use(authRouter);
+app.use(userRouter)
 
 
 app.use(function errorHandler(error, req, res, next){
     let response 
-    if (NODE.ENV === "production"){
+    if (NODE_ENV === "production"){
         response = { error: {message: 'server error'}}
     } else {
         console.log(error)
