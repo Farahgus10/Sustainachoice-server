@@ -1,5 +1,5 @@
 const CommentsService = {
-    getAllComment(db) {
+    getAllComments(db) {
         return db.select('*').from('location_comments')
     },
     insertComment(db, newComment) {
