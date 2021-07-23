@@ -9,6 +9,7 @@ const sustainachoiceRouter = require ('./Sustainachoice/sustainachoice-router');
 const emailRouter = require ('./Email/email-router')
 const authRouter = require('./Auth/auth-router')
 const userRouter = require('./Users/user-router')
+const commentsRouter = require('./Comments/comments-router')
 
 const app = express();
 
@@ -42,7 +43,8 @@ app.use(express.json());
 app.use(sustainachoiceRouter);
 app.use(emailRouter);
 app.use(authRouter);
-app.use(userRouter)
+app.use(userRouter);
+app.use(commentsRouter);
 
 
 app.use(function errorHandler(error, req, res, next){
