@@ -10,7 +10,7 @@ const serializeComment = comment => ({
     id: comment.id,
     text: xss(comment.text),
     date_commented: comment.date_commented,
-    article_id: comment.article_id,
+    location_id: comment.location_id,
     user_id: comment.user_id
 })
 
@@ -26,8 +26,8 @@ commentsRouter
     })
     .post((req, res, next) => {
         const db = req.app.get('db')
-        const { text, article_id, user_id, date_commented } = req.body
-        const newComment = { text, article_id, user_id, date_commented }
+        const { text, location_id, user_id, date_commented } = req.body
+        const newComment = { text, location_id, user_id, date_commented }
 
         for(const [key, value] of Object.entries(newComment))
             if(value == null) 
@@ -71,7 +71,7 @@ commentsRouter
         })
         .patch((req, res, next) => {
             const db = req.app.get('db');
-            const updatedComment = { text, date_commented }
+            const updatedComment = { text, date_commented } = req.body
 
             const numberOfValues = Object.values(updatedComment)
             if(numberOfValues === 0)
