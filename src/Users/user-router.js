@@ -70,5 +70,12 @@ usersRouter
             .catch(next)
     })
 
+usersRouter
+    .route('/users/:userId')
+    .all((req, res, next) => {
+        const db = req.app.get('db')
+        
+    })
+
 
 module.exports = usersRouter;

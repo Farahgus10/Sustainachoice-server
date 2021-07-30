@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path')
 const xss = require('xss')
 const CommentsService = require('./comments-service')
-const { requireAuth } = require('../Middleware/basic-auth')
+const { requireAuth } = require('../Middleware/jwt-auth')
 
 const commentsRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -17,6 +17,7 @@ const serializeComment = comment => ({
 
 commentsRouter
     .route('/comments')
+    .all(requireAuth)
     .get((req, res, next) => {
         const db = req.app.get('db')
         CommentsService.getAllComments(db)
@@ -70,7 +71,7 @@ commentsRouter
                 })
                 .catch(next)
         })
-        .patch((req, res, next) => {
+        .patch(requireAuth, (req, res, next) => {
             const db = req.app.get('db');
             const updatedComment = { text } = req.body
 
