@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const xss = require('xss')
 const CommentsService = require('./comments-service')
+const { requireAuth } = require('../Middleware/basic-auth')
 
 const commentsRouter = express.Router();
 const jsonBodyParser = express.json();
@@ -24,10 +25,10 @@ commentsRouter
             })
             .catch(next)
     })
-    .post((req, res, next) => {
+    .post(requireAuth, (req, res, next) => {
         const db = req.app.get('db')
-        const { text, location_id, user_id, date_commented } = req.body
-        const newComment = { text, location_id, user_id, date_commented }
+        const { text, location_id, user_id } = req.body
+        const newComment = { text, location_id, user_id }
 
         for(const [key, value] of Object.entries(newComment))
             if(value == null) 
@@ -35,7 +36,7 @@ commentsRouter
                     error: { message: `Missing ${key} in request body` }
                 })
         
-        newComment.date_commented = date_commented;
+        // newComment.date_commented = date_commented;
 
         CommentsService.insertComment(db, newComment)
             .then(comment => {
@@ -71,7 +72,7 @@ commentsRouter
         })
         .patch((req, res, next) => {
             const db = req.app.get('db');
-            const updatedComment = { text, date_commented } = req.body
+            const updatedComment = { text } = req.body
 
             const numberOfValues = Object.values(updatedComment)
             if(numberOfValues === 0)
