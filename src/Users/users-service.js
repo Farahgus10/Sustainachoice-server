@@ -1,5 +1,6 @@
 const xss = require('xss')
 const bcrypt = require('bcryptjs')
+const { getById } = require('../Comments/comments-service')
 
 const REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/
 
@@ -42,7 +43,13 @@ const UsersService = {
     },
     getAllUsers(db) {
         return db.select('*').from('users')
-    }
+    },
+    getById(db, id) {
+        return db.from('users').select('*').where('id', id).first();
+    },
+    // getCurrentUser(db, id) {
+    //     return db.from('users').select('*')
+    // }
 }
 
 module.exports = UsersService

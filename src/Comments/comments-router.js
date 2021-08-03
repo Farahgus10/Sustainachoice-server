@@ -31,13 +31,15 @@ commentsRouter
         const { text, location_id, user_id } = req.body
         const newComment = { text, location_id, user_id }
 
+        newComment.user_id = req.user.id
+
         for(const [key, value] of Object.entries(newComment))
             if(value == null) 
                 return res.status(400).json({
                     error: { message: `Missing ${key} in request body` }
                 })
         
-        // newComment.date_commented = date_commented;
+        
 
         CommentsService.insertComment(db, newComment)
             .then(comment => {

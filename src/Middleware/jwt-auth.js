@@ -6,8 +6,10 @@ function requireAuth(req, res, next) {
 
     if(!authToken.toLowerCase().startsWith('bearer ')) {
         return res.status(401).json({ error: 'Missing bearer token' })
-    } else P
-    bearerToken = authToken.slice(7, authToken.length)
+    } else {
+        bearerToken = authToken.slice(7, authToken.length)
+    }
+    
 
     try {
         const payload = AuthService.verifyJwt(bearerToken)
